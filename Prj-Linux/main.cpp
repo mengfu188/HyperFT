@@ -96,7 +96,7 @@ private:
 int main()
 {
 
-	string model_path = "./models";
+	string model_path = ".";
 	FaceTracking faceTrack(model_path);
 	cv::Mat frame;
 	cv::VideoCapture cap(0);
@@ -104,16 +104,20 @@ int main()
 	{
 		return -1;
 	}
-
+//	printf("width %d, height %d\n", cap.get(cv::CAP_PROP_FRAME_WIDTH), cap.get(cv::CAP_PROP_FRAME_HEIGHT));
+//	cap.set(cv::CAP_PROP_FRAME_WIDTH, 720);
+//	cap.set(cv::CAP_PROP_FRAME_HEIGHT, 405);
+//	printf("width %d, height %d\n", cap.get(cv::CAP_PROP_FRAME_WIDTH), cap.get(cv::CAP_PROP_FRAME_HEIGHT));
 	int frameIndex = 0;
 	vector<int> IDs;
 	vector<cv::Scalar> Colors;
 	cv::Scalar color;
-	srand((unsigned int)time(0));//��ʼ������Ϊ���ֵ
-	Queue<cv::Mat> framesQueue;
+	srand((unsigned int)time(0));//
+#ifdef CV_CXX11
+    Queue<cv::Mat> framesQueue;
 	std::vector<Face> faces;
 
-#ifdef CV_CXX11
+
 	bool process = true;
 
 	Queue<std::vector<Face> > predictionsQueue;
@@ -163,7 +167,9 @@ int main()
 		//cv::transpose(frame, frame);
 		//cv::flip(frame, frame, -1);
 		//cv::flip(frame, frame, 1);
-
+		double scale = 0.5;
+		printf("frame width %d, frame height %d \n", frame.cols, frame.rows);
+		cv::resize(frame, frame, cv::Size(frame.cols * scale, frame.rows * scale));
 		framesQueue.push(frame.clone());
 
 		if (!predictionsQueue.empty())
@@ -218,7 +224,7 @@ int main()
 		
 		imshow("frame", frame);
 
-		int q = cv::waitKey(30);
+		int q = cv::waitKey(25);
 		if (q == 27) break;
 	}
 

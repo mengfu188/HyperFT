@@ -3,8 +3,12 @@
 
 //#include "cv.h"
 //#include "highgui.h"
-#include "opencv/cv.h"
-#include "opencv/highgui.h"
+//#include "opencv4/opencv2/
+//#include "opencv2/
+//#include "opencv/core"
+//#include "opencv/highgui.h"
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
 #include <iostream>
 
 using namespace std;
@@ -34,7 +38,7 @@ private:
 
 
 	int winsize = 5;
-    CvPoint pta,ptb;		
+    cv::Point pta,ptb;
 
 	// Init methods
     double euclid_dist(const Point2f* point1, const Point2f* point2);

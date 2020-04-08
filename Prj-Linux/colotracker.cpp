@@ -2,9 +2,9 @@
 #include <iostream>
 #include <fstream> 
 #include <vector>
-#include "opencv/cv.h"
-#include "opencv/ml.h"
-#include "opencv/highgui.h"
+//#include "opencv/cv.h"
+//#include "opencv/ml.h"
+//#include "opencv/highgui.h"
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -165,7 +165,7 @@ void ColorTracker::init(cv::Mat & img)
 {
 	//保存第一帧图像
 	resize(img,frame1_1C,Size(img.cols/Scale,img.rows/Scale),0,0,1);
-	cvtColor(frame1_1C,frame1_1C,CV_BGRA2GRAY);
+	cvtColor(frame1_1C,frame1_1C,cv::COLOR_BGR2GRAY);
 }
 
 
@@ -178,7 +178,7 @@ cv::Rect ColorTracker::track(cv::Mat & img,cv::Mat before,double x1, double y1, 
 
 		double t = (double)getTickCount();//开始时间
 		resize(img,frame2_1C,Size(img.cols/Scale,img.rows/Scale),0,0,1);
-		cvtColor(frame2_1C,frame2_1C,CV_BGRA2GRAY);
+		cvtColor(frame2_1C,frame2_1C,cv::COLOR_BGR2GRAY);
 		t = (double)getTickCount() - t;//代码运行时间=结束时间-开始时间
 		printf("预处理时间= %gms\n", t*1000. / getTickFrequency());
 		cv::Mat  rec0(winsize,winsize,CV_8UC1);
@@ -211,7 +211,7 @@ cv::Rect ColorTracker::track(cv::Mat & img,cv::Mat before,double x1, double y1, 
 		}
         //金字塔图像
         // Pyr Lucas kanade Optical Flow
-		TermCriteria termcrit(CV_TERMCRIT_ITER|CV_TERMCRIT_EPS, 20, 0.03);
+		TermCriteria termcrit(cv::TermCriteria::MAX_ITER|cv::TermCriteria::EPS, 20, 0.03);
         //计算金字塔光流点，HI_MPI_IVE_LKOpticalFlow这是海思对应的函数，计算前向和反向光流点
 		vector<uchar> status;
         vector<float> err;

@@ -2,6 +2,7 @@
 #define ZEUSEESFACETRACKING_H
 //#include <opencv2/opencv.hpp>
 //#include <thread>
+#include <memory>
 #include "mtcnn.h"
 #include "time.h"
 #include "colotracker.h"
@@ -50,15 +51,6 @@ public:
 		isCanShow = false; //追踪一次后待框稳定后即可显示
 	}
 
-	Bbox faceBbox;
-
-	int face_id = -1;
-	long frameId = 0;
-	int ptr_num = 0;
-
-	Shape::Rect<float> face_location;
-	bool isCanShow;
-	cv::Mat frame_face_prev;
 
 	static cv::Rect SquarePadding(cv::Rect facebox, int margin_rows, int margin_cols, bool max)
 	{
@@ -93,6 +85,15 @@ public:
 		return sqrt((x.x - y.x) * (x.x - y.x) + (x.y - y.y) * (x.y - y.y));
 	}
 
+    Bbox faceBbox;
+
+    int face_id = -1;
+    long frameId = 0;
+    int ptr_num = 0;
+
+    Shape::Rect<float> face_location;
+    bool isCanShow;
+    cv::Mat frame_face_prev;
 
 	vector<vector<cv::Point> > faceSequence;
 	vector<vector<float>> attitudeSequence;

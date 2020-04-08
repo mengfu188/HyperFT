@@ -31,13 +31,13 @@ extern "C" {
 
 
 JNIEXPORT void JNICALL
-Java_trackingsoft_tracking_FaceTracking_initTracking(JNIEnv *env, jobject obj, jbyteArray yuv,
+Java_trackingsoft_tracking_FaceTracking_initTracking(JNIEnv *env, jclass obj, jbyteArray yuv,
                                                          jint height, jint width, jlong handle) {
 
         jbyte *pBuf = (jbyte *) env->GetByteArrayElements(yuv, 0);
         cv::Mat image(height + height / 2, width, CV_8UC1, (unsigned char *) pBuf);
         cv::Mat mBgr;
-        cvtColor(image, mBgr, CV_YUV2BGR_NV21);
+        cvtColor(image, mBgr, cv::COLOR_YUV2BGR_NV21);
         cv::transpose(mBgr, mBgr);
         cv::flip(mBgr, mBgr, -1);
         FaceTracking *trackingSession = (FaceTracking *) handle;
@@ -48,13 +48,13 @@ Java_trackingsoft_tracking_FaceTracking_initTracking(JNIEnv *env, jobject obj, j
 
 
 JNIEXPORT void JNICALL
-Java_trackingsoft_tracking_FaceTracking_update(JNIEnv *env, jobject obj, jbyteArray yuv,
-                                                jint height, jint width, jlong handle,jint isFlip) {
+Java_trackingsoft_tracking_FaceTracking_update(JNIEnv *env, jclass obj, jbyteArray yuv,
+                                                jint height, jint width, jlong handle) {
 
     jbyte *pBuf = (jbyte *) env->GetByteArrayElements(yuv, 0);
     cv::Mat image(height + height / 2, width, CV_8UC1, (unsigned char *) pBuf);
     cv::Mat mBgr;
-    cvtColor(image, mBgr, CV_YUV2BGR_NV21);
+    cvtColor(image, mBgr, cv::COLOR_YUV2BGR_NV21);
     cv::transpose(mBgr, mBgr);
     cv::flip(mBgr, mBgr, -1);
     FaceTracking *trackingSession = (FaceTracking *) handle;
@@ -65,7 +65,7 @@ Java_trackingsoft_tracking_FaceTracking_update(JNIEnv *env, jobject obj, jbyteAr
 
 
 JNIEXPORT jint JNICALL
-Java_trackingsoft_tracking_FaceTracking_getTrackingNum(JNIEnv *env, jobject obj, jlong handle) {
+Java_trackingsoft_tracking_FaceTracking_getTrackingNum(JNIEnv *env, jclass obj, jlong handle) {
     FaceTracking *trackingSession = (FaceTracking *) handle;
 
     return  (jint)trackingSession->trackingFace.size();
@@ -74,7 +74,7 @@ Java_trackingsoft_tracking_FaceTracking_getTrackingNum(JNIEnv *env, jobject obj,
 
 
 JNIEXPORT jintArray JNICALL
-Java_trackingsoft_tracking_FaceTracking_getTrackingLandmarkByIndex(JNIEnv *env, jobject obj,jint target, jlong handle) {
+Java_trackingsoft_tracking_FaceTracking_getTrackingLandmarkByIndex(JNIEnv *env, jclass obj,jint target, jlong handle) {
     FaceTracking *trackingSession = (FaceTracking *) handle;
     jintArray jarr = env->NewIntArray(106*2);
     jint *arr = env->GetIntArrayElements(jarr, NULL);
@@ -91,7 +91,7 @@ Java_trackingsoft_tracking_FaceTracking_getTrackingLandmarkByIndex(JNIEnv *env, 
 
 
 JNIEXPORT jintArray JNICALL
-Java_trackingsoft_tracking_FaceTracking_getTrackingLocationByIndex(JNIEnv *env, jobject obj,jint target, jlong handle) {
+Java_trackingsoft_tracking_FaceTracking_getTrackingLocationByIndex(JNIEnv *env, jclass obj,jint target, jlong handle) {
     FaceTracking *trackingSession = (FaceTracking *) handle;
     jintArray jarr = env->NewIntArray(4);
     jint *arr = env->GetIntArrayElements(jarr, NULL);
@@ -114,7 +114,7 @@ Java_trackingsoft_tracking_FaceTracking_getTrackingLocationByIndex(JNIEnv *env, 
 
 
 JNIEXPORT jintArray JNICALL
-Java_trackingsoft_tracking_FaceTracking_getAttributeByIndex(JNIEnv *env, jobject obj,jint target, jlong handle) {
+Java_trackingsoft_tracking_FaceTracking_getAttributeByIndex(JNIEnv *env, jclass obj,jint target, jlong handle) {
 
     FaceTracking *trackingSession = (FaceTracking *) handle;
     jintArray jarr = env->NewIntArray(4);
@@ -130,7 +130,7 @@ Java_trackingsoft_tracking_FaceTracking_getAttributeByIndex(JNIEnv *env, jobject
 
 
 JNIEXPORT jfloatArray JNICALL
-Java_trackingsoft_tracking_FaceTracking_getEulerAngleByIndex(JNIEnv *env, jobject obj,jint target, jlong handle) {
+Java_trackingsoft_tracking_FaceTracking_getEulerAngleByIndex(JNIEnv *env, jclass obj,jint target, jlong handle) {
 
     FaceTracking *trackingSession = (FaceTracking *) handle;
     jfloatArray jarr = env->NewFloatArray(3);
@@ -146,7 +146,7 @@ Java_trackingsoft_tracking_FaceTracking_getEulerAngleByIndex(JNIEnv *env, jobjec
 
 
 JNIEXPORT jint JNICALL
-Java_trackingsoft_tracking_FaceTracking_getTrackingIDByIndex(JNIEnv *env, jobject obj,jint target, jlong handle) {
+Java_trackingsoft_tracking_FaceTracking_getTrackingIDByIndex(JNIEnv *env, jclass obj,jint target, jlong handle) {
     FaceTracking *trackingSession = (FaceTracking *) handle;
     const Face &info= trackingSession->trackingFace[target];
     return (jint)info.face_id;
@@ -154,7 +154,7 @@ Java_trackingsoft_tracking_FaceTracking_getTrackingIDByIndex(JNIEnv *env, jobjec
 
 
 JNIEXPORT jlong JNICALL
-Java_trackingsoft_tracking_FaceTracking_createSession(JNIEnv *env, jobject obj, jstring folder) {
+Java_trackingsoft_tracking_FaceTracking_createSession(JNIEnv *env, jclass obj, jstring folder) {
 
     std::string detector_path = jstring2str(env, folder);
     FaceTracking *aliveDetector = new FaceTracking(detector_path);
@@ -167,7 +167,7 @@ Java_trackingsoft_tracking_FaceTracking_createSession(JNIEnv *env, jobject obj, 
 
 
 JNIEXPORT void JNICALL
-Java_trackingsoft_tracking_FaceTracking_releaseSession(JNIEnv *env, jobject obj, jlong handle) {
+Java_trackingsoft_tracking_FaceTracking_releaseSession(JNIEnv *env, jclass obj, jlong handle) {
     FaceTracking *trackingSession = (FaceTracking *) handle;
     delete trackingSession;
 }
